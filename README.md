@@ -108,6 +108,10 @@ vendor/bin/phpunit --testdox
  sail test
 ```
 
+- **Test Results:**
+
+  ![Test Results](public/images/tests.png)
+
 ### API Endpoints
 
 1. **Create Order:**
@@ -147,8 +151,19 @@ php artisan app:send-low-stock-notifications
 ```
 
 ### Example Email Notification
-**Subject:** Low Stock Alert for Beef
-**Body:** The stock for Beef has dropped below 50%. Please restock soon.
+**Subject:** Low Stock Alert: Beef
+**Body:** The stock for Beef is running low.
+
+Current stock: 7250g
+
+Please restock as soon as possible.
+
+Thank you for using our system!
+
+- **Email Notification Example:**
+
+  ![Email Example](public/images/email.png)
+
 
 ---
 
@@ -157,14 +172,4 @@ php artisan app:send-low-stock-notifications
 - Ensure correct database configuration in the `.env` file before running migrations.
 - Use `php artisan migrate:refresh` to reset the database during development.
 
-## Screenshots
-
-- **Email Notification Example:**
-
-  ![Email Example](public/images/email.png)
-
-
-- **Test Results:**
-
-  ![Test Results](public/images/tests.png)
 
