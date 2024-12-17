@@ -1,66 +1,167 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Inventory and Order Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+The goal of this system is to manage inventory levels for ingredients and process customer orders while ensuring proper notifications are sent when stock levels are low. The system handles three main models: Product, Ingredient, and Order.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- A product (e.g., Burger) is composed of multiple ingredients.
+- The system tracks ingredient stock levels in the database.
+- Automatic stock deduction when an order is placed.
+- Sends an email notification to the merchant when any ingredient stock reaches 50%.
+- Ensures only one email notification is sent per ingredient below 50%.
+- Comprehensive testing to validate order storage and stock updates.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Example Data
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+#### Product:
+- **Burger**
+  - 150g Beef
+  - 30g Cheese
+  - 20g Onion
 
-## Learning Laravel
+#### Initial Stock Levels:
+- Beef: 20kg
+- Cheese: 5kg
+- Onion: 1kg
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### Order Payload Example:
+```json
+{
+  "products": [
+    {
+      "product_id": 1,
+      "quantity": 2
+    }
+  ]
+}
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Specifications
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Backend Implementation in PHP v8.2, Laravel v^11.31, and MySQL v8.0.32.
+- Docker setup using [sail](https://laravel.com/docs/11.x/sail#introduction) to containerize the application.
+- Auto-generated Postman collection to test all APIs using [laravel-api-to-postman](https://github.com/andreaselia/laravel-api-to-postman).
 
-## Laravel Sponsors
+## Installation and Setup
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Clone the repository:
+```bash
+git clone git@github.com:FatmaSaad/inventory-order-system.git
+```
 
-### Premium Partners
+Switch to the repository folder:
+```bash
+cd inventory-order-system
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Install dependencies using Composer:
+```bash
+composer install
+```
 
-## Contributing
+Copy the example environment file:
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Generate the application key:
+```bash
+php artisan key:generate
+```
 
-## Code of Conduct
+Run database migrations and seed initial data:
+```bash
+php artisan migrate --seed
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Start the local development server:
+```bash
+php artisan serve
+```
 
-## Security Vulnerabilities
+You can now access the server at [http://localhost:8000](http://localhost:8000).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Docker Setup
 
-## License
+Use Laravel Sail to containerize the application. Ensure Docker is installed and running.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Start the containers:
+```bash
+sail up
+```
+
+Run migrations and seeders:
+```bash
+sail artisan migrate --seed
+```
+
+Access the application using the container’s server address.
+
+### Testing
+
+Run all unit tests:
+```bash
+vendor/bin/phpunit --testdox
+```
+
+```bash
+ sail test
+```
+
+### API Endpoints
+
+1. **Create Order:**
+   - Endpoint: `POST /api/orders`
+   - Payload Example:
+     ```json
+     {
+       "products": [
+         {
+           "product_id": 1,
+           "quantity": 2
+         }
+       ]
+     }
+     ```
+   - Functionality: Persists the order, deducts stock, and sends email if necessary.
+
+2. **Check Stock Levels:**
+   - Endpoint: `GET /api/ingredients`
+   - Functionality: Returns current stock levels for all ingredients.
+
+### Notifications
+
+- **Trigger:** When any ingredient stock level drops below 50%.
+- **Medium:** Email notification (integrated with [Mailtrap](https://mailtrap.io) for development).
+- **Scheduler:**
+  ```bash
+  php artisan schedule:work
+  ```
+  ```bash
+    sail artisan schedule:work
+    ```
+
+Run manually for testing:
+```bash
+php artisan app:send-low-stock-notifications
+```
+
+### Example Email Notification
+**Subject:** Low Stock Alert for Beef
+**Body:** The stock for Beef has dropped below 50%. Please restock soon.
+
+---
+
+## Development Notes
+
+- Ensure correct database configuration in the `.env` file before running migrations.
+- Use `php artisan migrate:refresh` to reset the database during development.
+
+## Screenshots
+
+- **Email Notification Example:**
+  ![Email Example](public/images/email.png)
+
+- **Test Results:**
+  ![Test Results](public/images/tests.png)
+
