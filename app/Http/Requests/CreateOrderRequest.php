@@ -55,11 +55,19 @@ class CreateOrderRequest extends FormRequest
     private function checkStockAvailability($validator)
     {
         foreach ($this->input('products') as $productOrder) {
+            // Check if the product_id and quantity are present
+            if (!isset($productOrder['product_id']) || !isset($productOrder['quantity'])) {
+                continue; // Skip this product if product_id or quantity is missing
+            }
+    
             $product = Product::find($productOrder['product_id']);
-
+    
             if ($product) {
                 foreach ($product->ingredients as $ingredient) {
-                    $consumed = $ingredient->pivot->quantity * $productOrder['quantity']; // Calculate the consumed quantity based on the product quantity
+                    // Calculate the consumed quantity based on the product quantity
+                    $consumed = $ingredient->pivot->quantity * $productOrder['quantity'];
+    
+                    // Check if there is sufficient stock
                     if ($ingredient->stock < $consumed) {
                         $validator->errors()->add(
                             'products.' . $productOrder['product_id'] . '.quantity',
@@ -70,4 +78,5 @@ class CreateOrderRequest extends FormRequest
             }
         }
     }
+    
 }
