@@ -160,8 +160,11 @@ php artisan app:send-low-stock-notifications
 ## Screenshots
 
 - **Email Notification Example:**
+
   ![Email Example](public/images/email.png)
 
+
 - **Test Results:**
+
   ![Test Results](public/images/tests.png)
 
