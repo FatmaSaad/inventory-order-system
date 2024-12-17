@@ -39,7 +39,7 @@ The goal of this system is to manage inventory levels for ingredients and proces
 
  Postman collection for the API. You can find the collection file below:
 
-- [Download the Postman Collection](storage/app/private/postman/2024_12_17_183936_laravel_collection.json)
+- [Download the Postman Collection](public/2024_12_17_183936_laravel_collection.json)
 
 You can import this file into Postman to test the API endpoints.
 
