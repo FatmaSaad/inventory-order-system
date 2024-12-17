@@ -6,6 +6,7 @@ use App\Models\Ingredient;
 use App\Models\User;
 use App\Notifications\LowStockNotification;
 use App\Observers\StockObserver;
+use App\Services\LowStockNotificationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
@@ -44,7 +45,8 @@ class StockObserverTest extends TestCase
         ]);
 
         // Create the StockObserver instance
-        $observer = new StockObserver();
+        $notificationService=new LowStockNotificationService ;
+        $observer = new StockObserver($notificationService);
 
 
         $observer->updated($ingredient);
@@ -75,8 +77,9 @@ class StockObserverTest extends TestCase
             'threshold' => 10,
             'notification_sent' => true,
         ]);
+        $notificationService=new LowStockNotificationService ;
 
-        $observer = new StockObserver();
+        $observer = new StockObserver($notificationService);
 
 
         $observer->updated($ingredient);

@@ -12,7 +12,7 @@ use App\Repositories\IngredientRepository;
 use App\Services\OrderService;
 use Mockery;
 
-class OrderTest extends TestCase
+class CreateOrderTest extends TestCase
 {
 
     use RefreshDatabase;
