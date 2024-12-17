@@ -149,8 +149,8 @@ vendor/bin/phpunit --testdox
   php artisan schedule:work
   ```
   ```bash
-    sail artisan schedule:work
-    ```
+  sail artisan schedule:work
+  ```
 
 Run manually for testing:
 ```bash
